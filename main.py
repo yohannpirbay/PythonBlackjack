@@ -2,6 +2,7 @@ import random
 
 
 class Card:
+
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
@@ -10,7 +11,7 @@ class Card:
         return f"{self.rank["rank"]} of {self.suit}"
 
 
-class Deck():
+class Deck:
 
     def __init__(self):
         self.cards = []
@@ -46,6 +47,46 @@ class Deck():
                 dealt_cards.append(self.cards.pop())
         return dealt_cards
     
-deck1 = Deck()
-for cards in deck1.cards:
-    print(cards)
+class Hand:
+    
+    def __init__(self, dealer = False):
+        self.cards = []
+        self.value = 0
+        self.dealer = dealer
+    
+    def add_card(self, card_list):
+        self.cards.extend(card_list)
+    
+    def calculate_value(self):
+        self.value = 0
+        has_ace = False
+
+        for card in self.cards:
+            self.value += int(card.rank["value"])
+            if card.rank["rank"] == "A":
+                has_ace = True
+            
+        if has_ace and self.value > 21:
+            self.value -= 10
+
+    def get_value(self):
+        self.calculate_value()
+        return self.value
+
+    def is_blackjack(self):
+        return self.get_value() == 21
+    
+    def display(self, show_all_dealer_cards = False):
+        print(f"{"Dealer's" if self.dealer else "Your"} hand: ")
+        for index, card in enumerate(self.cards):
+            if index == 0 and self.dealer \
+                and not show_all_dealer_cards and not self.is_blackjack():
+                print("hidden")
+            else:
+                print(card)
+        
+        if not self.dealer:
+            print("Value:", self.get_value())
+        print()
+
+
