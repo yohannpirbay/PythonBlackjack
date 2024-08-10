@@ -2,12 +2,13 @@ import random
 
 
 class Card:
-
+    
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
 
     def __str__(self):
+        # Overloading the print operator for the Card class.
         return f"{self.rank["rank"]} of {self.suit}"
 
 
@@ -37,10 +38,12 @@ class Deck:
                 self.cards.append(Card(suit, rank))
 
     def shuffle(self):
+        # Shuffles the deck of cards randomly.
         if len(self.cards) > 1:
             random.shuffle(self.cards)
 
     def deal(self, number):
+        # Deals a certain number of cards given as an argument.
         dealt_cards = []
         for i in range(number):
             if len(self.cards) > 0:
@@ -55,9 +58,11 @@ class Hand:
         self.dealer = dealer
     
     def add_card(self, card_list):
+        # Adds cards to a player's hand.
         self.cards.extend(card_list)
     
     def calculate_value(self):
+        # Calculates the value of a player's hand.
         self.value = 0
         has_ace = False
 
@@ -70,13 +75,16 @@ class Hand:
             self.value -= 10
 
     def get_value(self):
+        # Returns the value of a player's hand.
         self.calculate_value()
         return self.value
 
     def is_blackjack(self):
+        # Returns true if the hand is a blackjack.
         return self.get_value() == 21
     
     def display(self, show_all_dealer_cards = False):
+        # Displays the hand and value of a player's hand.
         print(f"{"Dealer's" if self.dealer else "Your"} hand: ")
         for index, card in enumerate(self.cards):
             if index == 0 and self.dealer \
@@ -93,6 +101,7 @@ class Hand:
 class Game:
 
     def play(self):
+        # Starts the game.
         game_number = 0
         games_to_play = 0
 
@@ -160,6 +169,7 @@ class Game:
         print("\nThanks for playing!")
 
     def check_winner(self, player_hand, dealer_hand, game_over=False):
+        # Checks if there is a winner between the 2 players.
         if not game_over:
             if player_hand.get_value() > 21:
                 print("You busted. Dealer wins!")
